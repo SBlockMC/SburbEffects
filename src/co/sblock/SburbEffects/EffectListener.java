@@ -1,6 +1,7 @@
 package co.sblock.SburbEffects;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -29,26 +30,38 @@ public class EffectListener implements Listener	{
 		ItemStack[] iS = pInv.getContents();
 		ArrayList<String> playerLore = new ArrayList<String>();
 		for(ItemStack i : iS)	{
-			if(i.getItemMeta().hasLore())	{
-				playerLore.addAll(i.getItemMeta().getLore());
+			try {
+				System.out.println(i.getType().toString());
+				if(i.hasItemMeta() && i.getItemMeta().hasLore())	{
+					playerLore.addAll(i.getItemMeta().getLore());
+				}
+			} catch (NullPointerException e) {
+		
 			}
 		}
-		for(String s: playerLore)	{
-			boolean isValidLore = false;
-			for(PassiveEffect pE : PassiveEffect.values())	{
-				isValidLore = pE.getLoreText().equalsIgnoreCase(s);				
+		try {
+			for(String s: playerLore)	{
+				try {
+					PassiveEffect pE = PassiveEffect.valueOf(s);
+				} catch (IllegalArgumentException e) {
+					p.sendMessage(s);
+					playerLore.remove(playerLore.indexOf(s));
+				}
 			}
-			if(!isValidLore)	{
-				playerLore.remove(playerLore.indexOf(s));
-			}
+		} catch (ConcurrentModificationException e) {
+
 		}
 		return playerLore;
 	}
 	
 	public void applyEffects(ArrayList<String> effects, Player p)	{
 		for(String lore : effects)	{
-			PassiveEffect pE = PassiveEffect.valueOf(lore);
-			pE.getEffect(pE, p);
+			try {
+				PassiveEffect pE = PassiveEffect.valueOf(lore);
+				pE.getEffect(pE, p);
+			} catch (IllegalArgumentException e) {
+
+			}
 		}
 	}
 }
