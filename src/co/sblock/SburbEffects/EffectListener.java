@@ -10,12 +10,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class EffectListener implements Listener	{
+	
+	public EffectListener(SburbEffects plugin)	{
+		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	}
 
 	public void onPlayerLogin(PlayerLoginEvent event)	{
-		this.scan(event.getPlayer());
+		Player p = event.getPlayer();
+		this.applyEffects(scan(p), p);
 	}
 	public void onPlayerPickupItem(PlayerPickupItemEvent event)	{
-		this.scan(event.getPlayer());
+		Player p = event.getPlayer();
+		this.applyEffects(scan(p), p);
 	}
 	
 	public ArrayList<String> scan(Player p)	{
@@ -37,5 +43,12 @@ public class EffectListener implements Listener	{
 			}
 		}
 		return playerLore;
+	}
+	
+	public void applyEffects(ArrayList<String> effects, Player p)	{
+		for(String lore : effects)	{
+			PassiveEffect pE = PassiveEffect.valueOf(lore);
+			pE.getEffect(pE, p);
+		}
 	}
 }

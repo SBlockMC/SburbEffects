@@ -12,9 +12,9 @@ public final class SburbEffects extends JavaPlugin	{
 
 	@Override
 	public void onEnable()	{
-		
+		new EffectListener(this);
 	}
-	
+
 	@Override
 	public void onDisable()	{
 		

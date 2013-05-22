@@ -19,7 +19,7 @@ public enum PassiveEffect {
 		return this.loreText;
 	}
 	
-	public void applyEffect(PassiveEffect e, Player p)	{
+	public void getEffect(PassiveEffect e, Player p)	{
 		PotionEffect potEffect;
 		switch (e)	{
 		

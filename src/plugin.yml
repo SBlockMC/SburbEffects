@@ -1,3 +1,7 @@
 name: SburbEffects
 main: co.sblock.SburbEffects.SburbEffects
 version: 0.5
+commands:
+  se:
+    description: Root of all SburbEffects commands
+    usage: /se <getlore/setlore> <lore>

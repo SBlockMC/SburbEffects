@@ -10,4 +10,8 @@ public enum ActiveEffect {
 	private ActiveEffect(String s)	{
 		loreText = s;
 	}
+	
+	public String getLoreText()	{
+		return this.loreText;
+	}
 }
