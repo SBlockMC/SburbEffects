@@ -7,14 +7,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 public final class SburbEffects extends JavaPlugin	{
 	
 	private EffectListener eL;
+	private EffectManager eM;
+	private BukkitTask task;
 
 	@Override
 	public void onEnable()	{
 		eL = new EffectListener(this);
+		eM = new EffectManager(this);
+		task = new EffectScheduler(this).runTaskTimer(this, 0, 1200);
 	}
 
 	@Override
@@ -48,12 +53,12 @@ public final class SburbEffects extends JavaPlugin	{
 				}
 				else if(args[0].equalsIgnoreCase("applyeffects") && !(args[1].equals(null)))	{
 					Player target = this.getServer().getPlayer(args[1]);
-					getLogger().info("Begin Scan");
-					ArrayList<String> playerLore = eL.scan(target);
-					getLogger().info(target + "'s lore is " + playerLore);
+					//getLogger().info("Begin Scan");
+					ArrayList<String> playerLore = eM.scan(target);
+					//getLogger().info(target + "'s lore is " + playerLore);
 					p.sendMessage(target.getName() + playerLore);
-					getLogger().info("Begin Application");
-					eL.applyEffects(playerLore, target);
+					//getLogger().info("Begin Application");
+					eM.applyEffects(playerLore, target);
 					return true;
 				}
 			}	
